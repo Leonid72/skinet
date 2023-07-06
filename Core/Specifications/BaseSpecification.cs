@@ -9,7 +9,7 @@ namespace Core.Specifications
     public class BaseSpecification<T> : ISpecification<T>
     {
         public BaseSpecification()
-        {}
+        { }
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
@@ -37,7 +37,7 @@ namespace Core.Specifications
         public int Skip { get; private set; }
         public bool IsPagingEnabled { get; private set; }
 
-        protected void ApplyPaging(int take, int skip)
+        protected void ApplyPaging(int skip, int take)
         {
             Skip = skip;
             Take = take;

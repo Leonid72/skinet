@@ -18,5 +18,11 @@ namespace Core.Specifications
         public int? BrandId { get; set; }
         public int? TypeID { get; set; }
         public string Sort { get; set; }
+        private string _serach { get; set; }
+        public string Search
+        {
+            get => _serach;
+            set => _serach = value.ToLower();
+        }
     }
 }
