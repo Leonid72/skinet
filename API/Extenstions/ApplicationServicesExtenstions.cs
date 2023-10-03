@@ -4,13 +4,15 @@ using Core.Interfaces;
 using API.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using API.Errors;
+using Microsoft.AspNetCore.Connections;
+using StackExchange.Redis;
 
 namespace API.Extenstions
 {
     public static class ApplicationServicesExtenstions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
-                IConfiguration configuration)
+                IConfiguration config)
         {
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -19,8 +21,15 @@ namespace API.Extenstions
 
             services.AddDbContext<StoreContext>(option =>
             {
-                option.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                option.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(options);
+            });
+            services.AddScoped<IBasketRepository, BasketRepository>();
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
