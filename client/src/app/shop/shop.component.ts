@@ -39,7 +39,7 @@ export class ShopComponent  implements OnInit {
         //this.shopParams.pageNumber = response.pageIndex;
         this.totalCount = response.count;
       },
-      error: error => console.log(error)
+      //error: error => console.log(error)
     });
   }
   getBrands(){
@@ -84,4 +84,5 @@ export class ShopComponent  implements OnInit {
     this.shopParams = new ShopParams();
     this.getProduct();
   }
+
 }

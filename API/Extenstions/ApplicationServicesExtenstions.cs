@@ -2,10 +2,12 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
 using API.Middleware;
-using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc;
 using API.Errors;
-using Microsoft.AspNetCore.Connections;
+//using Microsoft.AspNetCore.Connections;
 using StackExchange.Redis;
+using Microsoft.AspNetCore.Mvc;
+using Infrastructure.Services;
 
 namespace API.Extenstions
 {
@@ -32,6 +34,7 @@ namespace API.Extenstions
             services.AddScoped<IBasketRepository, BasketRepository>();
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<ApiBehaviorOptions>(opttions =>
@@ -40,6 +43,7 @@ namespace API.Extenstions
                 {
                     var errors = actionContext.ModelState
                             .Where(x => x.Value.Errors.Count > 1)
+
                             .SelectMany(x => x.Value.Errors)
                             .Select(x => x.ErrorMessage).ToArray();
 
